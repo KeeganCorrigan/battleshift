@@ -57,21 +57,14 @@ describe "a player" do
       @game.reload
 
       expect(payload[:message]).to eq("Successfully placed ship with a size of 2. You have 0 ship(s) to place.")
-      expect(@game.player_1_board.board.fourth.first["A1"].contents).to be_a(Ship)
-      expect(@game.player_1_board.board.fourth.second["A2"].contents).to be_a(Ship)
+      expect(@game.player_1_board.board.fourth.first["D1"].contents).to be_a(Ship)
+      expect(@game.player_1_board.board.fourth.second["D2"].contents).to be_a(Ship)
     end
 
-    xit "can not place a ship if it is not involved in the game" do
+    it "can not place a ship if it is not involved in the game" do
+      headers = { "CONTENT_TYPE" => "application/json", "X-API-KEY" => "8y123998ashd"}
 
-      headers = { "CONTENT_TYPE" => "application/json", "X-API-KEY" => "#8y123998ashd"}
-
-      post "/api/v1/games/#{@game.id}/ships", params: @ship_1_payload, headers: headers
-
-      payload = JSON.parse(response.body, symbolize_names: true)
-
-      expect(response[:message]).to eq("Successfully placed ship with a size of 3. You have 1 ship(s) to place with a size of 2.")
-      expect(@game.player_1_board.board.first.first["A1"].contents).to be_a(Ship)
-
+      expect{post "/api/v1/games/#{@game.id}/ships", params: @ship_1_payload, headers: headers}.to raise_error(UnauthorizedUser)
     end
 
   end

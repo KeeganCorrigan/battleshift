@@ -10,13 +10,14 @@ class Api::V1::Games::ShipsController < ApiController
 
     board = authenticate_board(request.headers["X-API-KEY"])
 
-    ShipPlacer.new(
-                     board: board,
-                     ship: ship,
-                     start_space: params[:start_space],
-                     end_space: params[:end_space]
-                  ).run
-    @game.save
+    if board
+      ShipPlacer.new(
+                       board: board,
+                       ship: ship,
+                       start_space: params[:start_space],
+                       end_space: params[:end_space]
+                    ).run
+      @game.save
 
     # board.board.map do |row|
     #   row.map do |space|
@@ -24,11 +25,14 @@ class Api::V1::Games::ShipsController < ApiController
     #   end
     # end
 
-    "Successfully placed ship with a size of #{ship.length}. You have 1 ship(s) to place with a size of 2."
+      "Successfully placed ship with a size of #{ship.length}. You have 1 ship(s) to place with a size of 2."
 
-    message = ShipMessage.new(board, ship).validate
+      message = ShipMessage.new(board, ship).validate
 
-    render json: @game, message: message
+      render json: @game, message: message
+    else
+      raise UnauthorizedUser.new
+    end
 
   end
 
@@ -40,5 +44,13 @@ class Api::V1::Games::ShipsController < ApiController
     elsif auth_token == @game.player_2_auth_token
       @game.player_2_board
     end
+  end
+end
+
+
+# TODO: move this from controller level
+class UnauthorizedUser < StandardError
+  def initialize(msg = "You are not authorized to play this game")
+    super
   end
 end

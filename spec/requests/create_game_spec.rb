@@ -40,4 +40,17 @@ describe 'post api/v1/games' do
     expect(payload[:message]).to eq("Unauthorized")
     expect(Game.count).to eq(0)
   end
+
+  it "can not create a game if player(s) status is not active" do
+    user_1 = create(:user, status: "inactive")
+    user_2 = create(:user, email: "fake@fake.com", auth_token: "oia09d09j")
+    headers = { "CONTENT_TYPE" => "application/json", "X-API-KEY" => "#{user_1.auth_token}"}
+    json_payload = {opponent_email: "fake@fake.com"}.to_json
+    post "/api/v1/games", params: json_payload, headers: headers
+
+    payload = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to have_http_status(401)
+    expect(payload[:message]).to eq("Unauthorized")
+  end
 end

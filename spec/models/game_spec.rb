@@ -10,7 +10,10 @@ describe Game, type: :model do
     expect(game.player_2_turns).to eq(0)
     expect(game.player_1_auth_token).to eq("ouhasdio")
     expect(game.player_2_auth_token).to eq("98has98hasd")
-    expect(game.current_turn).to eq("player_1")
+    allow_any_instance_of(Game).to receive(:current_turn).and_return("player_1")
+    allow_any_instance_of(Game).to receive(:player_1).and_return(User.first)
+    allow_any_instance_of(Game).to receive(:player_2).and_return(User.last)
+
     expect(game.player_1).to eq(User.first)
     expect(game.player_2).to eq(User.last)
   end

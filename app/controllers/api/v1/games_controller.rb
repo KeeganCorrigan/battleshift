@@ -1,6 +1,5 @@
 class Api::V1::GamesController < ApiController
   before_action :authenticate_token, :authenticate_email, :set_players
-
   def create
     render json: @game if create_game(@player_1, @player_2).save!
   end

@@ -41,6 +41,4 @@ class ApiController < ActionController::API
       render json: @game, message: "Invalid move. Game over.", status: 400
     end
   end
-
-  # TODO: validate player is in game method
 end

@@ -7,6 +7,7 @@ class ShipPlacer
   end
 
   def run
+    ship_count_validator
     if same_row?
       place_in_row
     elsif same_column?
@@ -17,8 +18,14 @@ class ShipPlacer
   end
 
   private
-  attr_reader :board, :ship,
-    :start_space, :end_space
+
+  attr_reader :board, :ship, :start_space, :end_space
+
+  def ship_count_validator
+    if @board.ships.length == 2
+      raise InvalidShipPlacement.new("You may only place 2 ships.")
+    end
+  end
 
   def same_row?
     start_space[0] == end_space[0]
@@ -51,11 +58,5 @@ class ShipPlacer
     else
       space.occupy!(ship)
     end
-  end
-end
-
-class InvalidShipPlacement < StandardError
-  def initialize(msg = "Invalid ship placement")
-    super
   end
 end

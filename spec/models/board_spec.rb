@@ -23,7 +23,7 @@ describe Board, type: :model do
     end
 
     describe "#ships" do
-      it "returns an array unique ship objects on board" do
+      it "returns an array of unique ship objects on board" do
         expect(@board.ships.length).to eq(2)
         expect(@board.ships.first).to be_a(Ship)
       end

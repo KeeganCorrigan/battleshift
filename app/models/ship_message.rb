@@ -24,9 +24,7 @@ class ShipMessage
   end
 
   def ships_left
-    if ship_count == 0
-      return 2
-    elsif ship_count < @remainder
+    if ship_count < @remainder
       return 1
     elsif ship_count == @remainder
       return 0

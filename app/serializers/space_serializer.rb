@@ -3,12 +3,10 @@ class SpaceSerializer < ActiveModel::Serializer
   attributes :coordinates, :status
 
   def coordinates
-    # "A1"
     object.coordinates
   end
 
   def status
-    # "Not Attacked"
     object.status
   end
 end

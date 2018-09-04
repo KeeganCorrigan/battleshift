@@ -1,6 +1,6 @@
 class Api::V1::Games::ShotsController < ApiController
-  before_action :set_game, :validate_coordinates, :set_user, :game_over
-
+  before_action :authenticate_token, :set_game, :validate_coordinates, :set_user, :game_over
+  
   def create
     auth_token = response.request.env["HTTP_X_API_KEY"]
     board = set_opponent_board(request.headers["X-API-KEY"], @game)

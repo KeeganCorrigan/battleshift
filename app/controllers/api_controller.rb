@@ -20,7 +20,7 @@ class ApiController < ActionController::API
     user = User.where(auth_token: api_key).first if api_key
 
     unless user
-      head(:bad_request)
+      render json: { message: "Unauthorized" }, status: 401
       return false
     end
   end
@@ -30,7 +30,7 @@ class ApiController < ActionController::API
     user = User.where(email: email).first if email
 
     unless user
-      head(:bad_request)
+      render json: { message: "Invalid email." }, status: 400
       return false
     end
   end
@@ -41,4 +41,6 @@ class ApiController < ActionController::API
       render json: @game, message: "Invalid move. Game over.", status: 400
     end
   end
+
+  # TODO: validate player is in game method
 end

@@ -8,10 +8,11 @@ Rails.application.routes.draw do
       end
     end
   end
+
   get '/confirmation', to: "confirmation#update"
   get '/confirmed', to: "confirmation#show"
 
-  resources :users, only: [:new, :index, :create]
+  resources :users, only: [:new, :create]
 
   root to: "welcome#show"
   get "/register", to: "users#new"

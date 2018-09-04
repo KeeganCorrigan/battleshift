@@ -2,14 +2,10 @@ require "rails_helper"
 
 describe "an unregistered user" do
   it "goes to confirmation link" do
-    user = create(:user)
-
-    expect(user.status).to eq("inactive")
-
+    user = create(:user, status: "inactive")
     visit confirmation_url(auth_token: user.auth_token)
 
     expect(current_path).to eq(confirmed_path)
-
     user.reload
 
     expect(page).to have_content("Thank you! Your account is now activated.")

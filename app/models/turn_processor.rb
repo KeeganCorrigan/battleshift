@@ -11,8 +11,6 @@ class TurnProcessor
     begin
       attack_opponent
       game.save!
-    rescue InvalidAttack => e
-      @messages << e.message
     end
   end
 
@@ -26,9 +24,17 @@ class TurnProcessor
 
   def attack_opponent
     result = Shooter.new(board: @board, target: target).fire!
+    update_message(result)
+    update_winner(result)
+  end
+
+  def update_message(result)
     @messages << "Your shot resulted in a #{result[:ship_status]}."
     @messages << "Battleship sunk." if result[:sunk] == true
     @messages << "Game over." if result[:game_over] == true
+  end
+
+  def update_winner(result)
     @game.winner = @user.email if result[:game_over] == true
   end
 end

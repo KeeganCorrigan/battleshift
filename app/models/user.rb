@@ -4,12 +4,10 @@ class User < ApplicationRecord
 
   validates_presence_of :name, uniqueness: true, presence: true
   validates_presence_of :password, require: true, allow_nil: true
+  validates :password, confirmation: { case_sensitive: true }
+  validates_presence_of :email, uniqueness: true
 
-  validates_presence_of :email, :status
-
-  has_many :games, class_name: 'Game', foreign_key: 'player_1_id', dependent: :destroy
-  has_many :games, class_name: 'Game', foreign_key: 'player_2_id', dependent: :destroy
-
+  validates_presence_of :status
 
   enum status: [:inactive, :active]
 
